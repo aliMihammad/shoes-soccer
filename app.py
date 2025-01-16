@@ -58,7 +58,7 @@ def get_search_similarity(row, user_vectors):
     material_similarity = cosine_similarity([ast.literal_eval(row['material_vector'])], [user_vectors["material_vector"]])[0][0]
     series_similarity = cosine_similarity([ast.literal_eval(row["series_vector"])], [user_vectors["series_vector"]])[0][0]
 
-    # Membuat dictionary dengan hasil cosine similarity dan ID
+     # Membuat dictionary dengan hasil cosine similarity dan ID
     similarities = {
         "shoes_id": row['shoes_id'],
         "Nama Produk": row['shoes_name'],
@@ -157,7 +157,7 @@ def generate_vectors():
         'material_vector': material_vector,
         'series_vector': series_vector,
         'color_vector': color_vector
-    }), print(data['color'])
+    }), print('get vector berhasil')
 
 @app.route('/get_similarity', methods=['POST'])
 def get_similarity():
@@ -211,7 +211,7 @@ def get_similarity():
     recommendation = sorted(recommendations, key=lambda x: (x[prioritas], x["average_similarity"]), reverse=True)[:16]
 
     # return hasil rekomendasi
-    return jsonify(recommendation), print(products)
+    return jsonify(recommendation),print("sukses chatbot")
 
 @app.route('/get_search_recommendation', methods=['POST'])
 def get_search_recommendation():
@@ -339,6 +339,7 @@ def get_search_recommendation():
     filtered_products = [
         product for product in products if min_price <= int(product['price']) < max_price
     ]
+    # return print(search_input_vector['position_vector'])
     
     recommendations = []
 
@@ -399,43 +400,11 @@ def get_search_recommendation():
         )[:50]
     
 
-    # conn = pymysql.connect(host='localhost', user='root', password='', db='shoes-soccer')
-    # cursor = conn.cursor()
-    # cursor.execute("DELETE FROM search_recommendation")
-    # conn.commit()
-    
-    # no = 1
-
-    # # Insert hasil similarity ke database
-    # for recommendation in recommendations:
-    #     sql = """
-    #         INSERT INTO search_recommendation 
-    #         (no, shoes_id, brand_similarity, material_similarity, position_similarity, series_similarity,
-    #         color_similarity, surface_similarity, average_similarity)
-    #         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-    #     """
-    #     data = (
-    #         no,
-    #         recommendation['shoes_id'],
-    #         recommendation['brand_similarity'],
-    #         recommendation['material_similarity'],
-    #         recommendation['position_similarity'],
-    #         recommendation['series_similarity'],
-    #         recommendation['color_similarity'],
-    #         recommendation['surface_similarity'],
-    #         recommendation['average_similarity']
-    #     )
-    #     cursor.execute(sql, data)
-    #     no += 1
-
-    # conn.commit()
-    # conn.close()
-
     # Kembalikan hasil similarity
-    return jsonify(recommendations),print(pd.DataFrame(recommendations))
+    return jsonify(recommendations),print("sukses")
 
 
-
-
+# if __name__ == '__main__':
+#     app.run(port=5000)
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True) # Menjalankan API pada port 5000
+    app.run(host='0.0.0.0', port=8000)
