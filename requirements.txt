@@ -1,6 +1,6 @@
-flask
-gensim
+Flask
 numpy
 pandas
-gunicorn
+gensim
 scikit-learn
+gunicorn
